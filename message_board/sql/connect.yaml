@@ -1,5 +1,5 @@
 host: 127.0.0.1
 username: root
 password: "密碼"
-dbname: "資料庫名稱"
+dbname: go
 port: 3306

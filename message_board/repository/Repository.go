@@ -1,46 +1,36 @@
 package repository
 
 import (
-	"message/config"
 	"message/model"
+	"message/sql"
 )
 
 //查詢全部留言
-func GetAllMessage() (message []*model.Message,err error) {
-	if err := config.Sql.Find(&message).Error; err != nil {
-		return nil,err
-	}
+func GetAllMessage() (message []*model.Message, err error) {
+	err = sql.Connect.Find(&message).Error
 	return
 }
 
 //查詢 {id} 留言
 func GetMessage(message *model.Message, id string) (err error) {
-	if err := config.Sql.Where("id=?", id).First(&message).Error; err != nil {
-		return err
-	}
-	return nil
+	err = sql.Connect.Where("id=?", id).First(&message).Error
+	return
 }
 
 //新增留言
 func CreateMessage(message *model.Message) (err error) {
-	if err = config.Sql.Create(&message).Error; err != nil {
-		return err
-	}
-	return nil
+	err = sql.Connect.Create(&message).Error
+	return
 }
 
 //更新 {id} 留言
 func UpdateMessage(message *model.Message, content, id string) (err error) {
-	if err = config.Sql.Model(&message).Where("id=?", id).Update("content" ,content).Error; err != nil {
-		return err
-	}
-	return nil
+	err = sql.Connect.Where("id=?", id).First(&message).Update("content", content).Error
+	return
 }
 
 //刪除 {id} 留言
 func DeleteMessage(message *model.Message, id string) (err error) {
-	if err = config.Sql.Where("id=?", id).Delete(&message).Error; err != nil {
-		return err
-	}
-	return nil
+	err = sql.Connect.Where("id=?", id).First(&message).Delete(&message).Error
+	return
 }
