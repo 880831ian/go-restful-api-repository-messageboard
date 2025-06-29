@@ -1,6 +1,6 @@
 本文章是使用 Go 來寫一個 Repository Restful API 的留言板，並且會使用 gin 以及 gorm (使用 Mysql)套件。
 
-建議可以先觀看 [Go 介紹](https://pin-yi.me/go/) 文章來簡單學習 Go 語言。
+建議可以先觀看 [Go 介紹](https://pin-yi.me/blog/golang/go-introduce/) 文章來簡單學習 Go 語言。
 
 版本資訊
 
@@ -86,14 +86,14 @@ func main() {
 	if err := sql.InitMySql(); err != nil {
 		panic(err)
 	}
-	
+
 	//連結模型
 	sql.Connect.AutoMigrate(&model.Message{})
 	//sql.Connect.Table("message") //也可以使用連線已有資料表方式
-	
+
 	//註冊路由
 	r := router.SetRouter()
-	
+
 	//啟動埠為8081的專案
 	fmt.Println("開啟127.0.0.0.1:8081...")
 	r.Run("127.0.0.1:8081")
@@ -150,12 +150,12 @@ type conf struct {
 func (c *conf) getConf() *conf {
 	//讀取config/connect.yaml檔案
 	yamlFile, err := ioutil.ReadFile("sql/connect.yaml")
-	
+
 	//若出現錯誤，列印錯誤訊息
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	
+
 	//將讀取的字串轉換成結構體conf
 	err = yaml.Unmarshal(yamlFile, c)
 	if err != nil {
@@ -172,10 +172,10 @@ func (c *conf) getConf() *conf {
 //初始化連線資料庫
 func InitMySql() (err error) {
 	var c conf
-	
+
 	//獲取yaml配置引數
 	conf := c.getConf()
-	
+
 	//將yaml配置引數拼接成連線資料庫的url
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		conf.UserName,
@@ -184,13 +184,13 @@ func InitMySql() (err error) {
 		conf.Port,
 		conf.DbName,
 	)
-	
+
 	//連線資料庫
 	Connect, err = gorm.Open(mysql.New(mysql.Config{DSN: dsn}), &gorm.Config{})
 	return
 }
 ```
-初始化資料庫，會把剛剛讀取 yaml 的 conf  串接成可以連接資料庫的 url ，最後連線資料庫。 
+初始化資料庫，會把剛剛讀取 yaml 的 conf  串接成可以連接資料庫的 url ，最後連線資料庫。
 
 <br>
 
@@ -253,7 +253,7 @@ type Message struct {
 
 <br>
 
-### controller.go 
+### controller.go
 
 **(下面為一個檔案，但長度有點長，分開說明)**
 
